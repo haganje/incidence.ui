@@ -52,7 +52,20 @@ shinyUI(
 
           uiOutput("choose_interval"),
 
-          uiOutput("choose_groups_column")
+          uiOutput("choose_groups_column"),
+
+          checkboxInput(
+            inputId = "NA_as_group",
+            label = "Use unknown group (NA)?",
+            value = TRUE
+          ),
+
+          checkboxInput(
+            inputId = "ISO_weeks",
+            label = "Use ISO weeks?",
+            value = TRUE
+          )
+
         )
 
       ),

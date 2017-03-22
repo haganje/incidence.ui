@@ -37,10 +37,16 @@ server <- function(input, output) {
       groups <- NULL
     }
 
+    NA_as_group <- input$NA_as_group
+
+    use_iso_weeks <- input$ISO_weeks
+
     req(input$dates_column)
     out <- incidence(dates,
                      interval = input$interval,
-                     groups = groups)
+                     groups = groups,
+                     na_as_group = NA_as_group,
+                     iso_week = use_iso_weeks)
 
     return(out)
   })
@@ -117,6 +123,7 @@ server <- function(input, output) {
     pdf(NULL) # hack to avoid R graphical window to pop up
     x <- make_incidence()
     out <- plot(x)
+    dev.off()
     out
   })
 
