@@ -1,15 +1,6 @@
----
-output: 
-  html_document: 
-    keep_md: yes
----
 
 
 
-
-<img src="https://raw.githubusercontent.com/reconhub/incidence.ui/master/logo/banner.png">
-
-<br>
 
 [![Travis-CI Build Status](https://travis-ci.org/reconhub/incidence.ui.svg?branch=master)](https://travis-ci.org/reconhub/incidence.ui)
 
