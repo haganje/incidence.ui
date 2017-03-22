@@ -50,10 +50,18 @@ shinyUI(
 
           uiOutput("choose_date_column"),
 
-          uiOutput("choose_interval")
+          uiOutput("choose_interval"),
+
+          uiOutput("choose_groups_column")
         )
 
       ),
+
+
+
+
+
+
 
       # Show a plot of the generated distribution
       mainPanel(
@@ -71,7 +79,8 @@ shinyUI(
 
           tabPanel(
             title = "Incidence view",
-            plotly::plotlyOutput("plot")
+            plotly::plotlyOutput("plot"),
+            verbatimTextOutput("printed_incidence_object")
           ),
 
 

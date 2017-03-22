@@ -29,9 +29,18 @@ server <- function(input, output) {
   make_incidence <- reactive({
     x <- get_data()
 
-    req(input$data_column)
-    out <- incidence(x[[input$data_column]],
-                     interval = input$interval)
+    dates <- x[[input$dates_column]]
+
+    if (input$groups_column != "[none]") {
+      groups <- x[[input$groups_column]]
+    } else {
+      groups <- NULL
+    }
+
+    req(input$dates_column)
+    out <- incidence(dates,
+                     interval = input$interval,
+                     groups = groups)
 
     return(out)
   })
@@ -56,7 +65,7 @@ server <- function(input, output) {
 
   output$choose_date_column <- renderUI({
     selectInput(
-      inputId = "data_column",
+      inputId = "dates_column",
       label = "Select dates to use",
       choices = names(get_data())
     )
@@ -79,6 +88,29 @@ server <- function(input, output) {
 
 
 
+  ## UI input: choose column for groups
+
+  output$choose_groups_column <- renderUI({
+
+    choices <- c("[none]", names(get_data()))
+
+    selectInput(
+      inputId = "groups_column",
+      label = "Group data by",
+      choices = choices
+    )
+
+  })
+
+
+
+
+
+
+
+
+
+
   ## This creates a plotly version of the plot
 
   output$plot <- plotly::renderPlotly({
@@ -91,6 +123,13 @@ server <- function(input, output) {
 
 
 
+
+
+  ## This creates a rendering of the R incidence object
+
+  output$printed_incidence_object <- shiny::renderPrint({
+    print(make_incidence())
+  })
 
 
   ## This returns some system info: date, sessionInfo, etc.
