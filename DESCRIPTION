@@ -1,9 +1,16 @@
 Package: incidence.ui
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.4.0)
-License: What license is it under?
-Encoding: UTF-8
-LazyData: true
+Type: Package
+Title: Graphical User Interface for the incidence package
+Version: 1.0.0
+Authors@R: c(person("Thibaut", "Jombart", role = c("aut", "cre"), email =
+  "thibautjombart@gmail.com"))
+Description: Provides a GUI for RECON's incidence package.
+License: MIT + file LICENSE
+URL: http://www.repidemicsconsortium.org/incidence.ui/
+BugReports: http://github.com/reconhub/incidence.ui/issues
+RoxygenNote: 6.0.1
+Imports:
+    incidence,
+    shiny
+Suggests:
+    outbreaks

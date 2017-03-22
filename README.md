@@ -4,17 +4,7 @@ output:
     keep_md: yes
 ---
 
-```{r, echo = FALSE, message=FALSE, results='hide'}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.width = 8,
-  fig.height = 6,
-  fig.path = "figs/",
-  echo = TRUE
-)
 
-```
 
 
 <img src="https://raw.githubusercontent.com/reconhub/incidence.ui/master/logo/banner.png">
@@ -35,12 +25,14 @@ knitr::opts_chunk$set(
 # Installing the package
 
 To install the current stable, CRAN version of the package, type:
-```{r install, eval=FALSE}
+
+```r
 install.packages("incidence.ui")
 ```
 
 To benefit from the latest features and bug fixes, install the development, *github* version of the package using:
-```{r install2, eval=FALSE}
+
+```r
 devtools::install_github("reconhub/incidence.ui")
 ```
 
