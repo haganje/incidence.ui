@@ -56,6 +56,21 @@ server <- function(input, output) {
 
 
 
+  ## This function makes an incidence_fit object
+
+  make_incidence_fit <- reactive({
+    x <- make_incidence()
+
+    out <- fit_optim_split(x)$fit
+
+    return(out)
+  })
+
+
+
+
+
+
   ## UI output: show input data table
 
   output$input_data <- DT::renderDataTable ({
@@ -122,7 +137,14 @@ server <- function(input, output) {
   output$plot <- plotly::renderPlotly({
     pdf(NULL) # hack to avoid R graphical window to pop up
     x <- make_incidence()
-    out <- plot(x)
+
+    if (input$add_fit) {
+      fit <- make_incidence_fit()
+    } else {
+      fit <- NULL
+    }
+
+    out <- plot(x, fit = fit)
     dev.off()
     out
   })

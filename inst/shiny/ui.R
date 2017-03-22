@@ -64,6 +64,12 @@ shinyUI(
             inputId = "ISO_weeks",
             label = "Use ISO weeks?",
             value = TRUE
+          ),
+
+          checkboxInput(
+            inputId = "add_fit",
+            label = "Add model fit?",
+            value = FALSE
           )
 
         )
