@@ -1,0 +1,15 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.travis\.yml$
+^incidence_.*\.tar\.gz$
+^Makefile$
+^README\.Rmd$
+^update_web\.sh$
+figure/*
+^codecov\.yml$
+figs/*
+logo/*
+^README-.*\.png$
+^CONDUCT\.md$
+docs/
+misc/

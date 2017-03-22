@@ -1,0 +1,79 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r, echo = FALSE, message=FALSE, results='hide'}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  fig.path = "figs/",
+  echo = TRUE
+)
+
+```
+
+
+<img src="https://raw.githubusercontent.com/reconhub/incidence.ui/master/logo/banner.png">
+
+<br>
+
+[![Travis-CI Build Status](https://travis-ci.org/reconhub/incidence.ui.svg?branch=master)](https://travis-ci.org/reconhub/incidence.ui)
+
+[![Coverage Status](https://codecov.io/github/reconhub/incidence.ui/coverage.svg?branch=master)](https://codecov.io/github/reconhub/incidence.ui?branch=master)
+
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/incidence.ui)](https://cran.r-project.org/package=incidence.ui)
+
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/incidence.ui)](https://cran.r-project.org/package=incidence.ui)
+
+
+<br>
+
+# Installing the package
+
+To install the current stable, CRAN version of the package, type:
+```{r install, eval=FALSE}
+install.packages("incidence.ui")
+```
+
+To benefit from the latest features and bug fixes, install the development, *github* version of the package using:
+```{r install2, eval=FALSE}
+devtools::install_github("reconhub/incidence.ui")
+```
+
+Note that this requires the package *devtools* installed.
+
+
+
+<br>
+
+# What does it do?
+
+
+
+
+
+<br>
+
+# Resources
+
+<br>
+
+
+
+# Contributors (by alphabetic order):
+- [Thibaut Jombart](https://github.com/thibautjombart)
+
+See details of contributions on:
+<br>
+https://github.com/reconhub/incidence.ui/graphs/contributors
+
+
+Contributions are welcome via **pull requests**.
+
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+**Maintainer:** Thibaut Jombart (thibautjombart@gmail.com)
