@@ -1,4 +1,9 @@
 
+extensions <- c("csv", "txt", "xlsx", "ods")
+
+
+
+
 
 server <- function(input, output) {
 
@@ -12,11 +17,10 @@ server <- function(input, output) {
       return(mers_korea_2015$linelist)
     } else {
 
-      req(input$inputfile)
-
       return(read.csv(input$inputfile$datapath))
+      ## dataimportServer("datasource",
+      ##                  fileExt = extensions)
     }
-
   })
 
 
@@ -60,7 +64,11 @@ server <- function(input, output) {
 
   make_incidence_fit <- reactive({
     x <- make_incidence()
-
+    ## browser()
+    x <- subset(x,
+                from = min(input$fit_interval),
+                to = max(input$fit_interval)
+                )
     out <- fit_optim_split(x)$fit
 
     return(out)
@@ -126,6 +134,19 @@ server <- function(input, output) {
 
 
 
+
+
+  ## UI input: choose fit interval
+
+  output$choose_fit_interval <- renderUI({
+    x <- make_incidence()
+
+    sliderInput(
+      inputId = "fit_interval",
+      label = "Indicate fitting interval (in days)",
+      min = 0, max = x$timespan, step = x$interval,
+      value = c(0, x$timespan))
+  })
 
 
 
