@@ -1,5 +1,8 @@
 
 extensions <- c("csv", "txt", "xlsx", "ods")
+data_examples <- list(ebola_sim = ebola_sim$linelist,
+                      mers = mers_korea_2015$linelist
+                      )
 
 
 
@@ -10,19 +13,23 @@ server <- function(input, output) {
   ## This function processes UI inputs and returns a data.frame which will be
   ## used as raw inputs.
 
-  get_data <- reactive({
-    if (input$datasource == "ebola_sim") {
-      return(ebola_sim_clean$linelist)
-    } else if (input$datasource == "mers_korea") {
-      return(mers_korea_2015$linelist)
-    } else {
+  ## get_data <- reactive({
+  ##   if (input$datasource == "ebola_sim") {
+  ##     return(ebola_sim_clean$linelist)
+  ##   } else if (input$datasource == "mers_korea") {
+  ##     return(mers_korea_2015$linelist)
+  ##   } else {
 
-      return(read.csv(input$inputfile$datapath))
-      ## dataimportServer("datasource",
-      ##                  fileExt = extensions)
-    }
-  })
+  ##     return(read.csv(input$inputfile$datapath))
+  ##     ## dataimportServer("datasource",
+  ##     ##                  fileExt = extensions)
+  ##   }
+  ## })
 
+  get_data <- dataimportServer("datasource",
+                               fileExt = extensions,
+                               sampleDatasets = data_examples
+                               )
 
 
 
@@ -99,6 +106,17 @@ server <- function(input, output) {
 
 
 
+  ## UI output: show input data table
+
+  output$incidence_table <- DT::renderDataTable ({
+    as.data.frame(make_incidence())
+  })
+
+
+
+
+
+
   ## UI input: choose column for dates
 
   output$choose_date_column <- renderUI({
@@ -149,12 +167,25 @@ server <- function(input, output) {
 
   output$choose_fit_interval <- renderUI({
     x <- make_incidence()
+    lab <- sprintf("Indicate fitting interval (in %d days periods)",
+                   x$interval)
 
-    sliderInput(
-      inputId = "fit_interval",
-      label = "Indicate fitting interval (in days)",
-      min = 0, max = x$timespan, step = x$interval,
-      value = c(0, x$timespan))
+    div(
+      sliderInput(
+        inputId = "fit_interval",
+        label = lab,
+        min = 0, max = length(x$dates),
+        step = 1L,
+        value = c(0, length(x$dates))
+      ),
+      a(paste0("current dates: ",
+              as.character(min(x$dates)),
+              " - ",
+              as.character(max(x$dates)))
+        )
+    )
+
+
   })
 
 
@@ -184,11 +215,43 @@ server <- function(input, output) {
 
 
 
+  ## This handles the download of the incidence table.
+
+  output$download_incidence <- downloadHandler(
+    filename = function() {
+      paste('incidence_table_', Sys.Date(), '.csv', sep='')
+    },
+    content = function(con) {
+      write.csv(make_incidence(), con,
+                row.names = FALSE)
+    }
+  )
+
+
+
+
+
+
   ## This creates a rendering of the R incidence object
 
   output$printed_incidence_object <- shiny::renderPrint({
     print(make_incidence())
   })
+
+
+
+
+
+
+  ## This creates a rendering of the R incidence object
+
+  output$printed_fit_object <- shiny::renderPrint({
+    print(make_incidence_fit())
+  })
+
+
+
+
 
 
   ## This returns some system info: date, sessionInfo, etc.

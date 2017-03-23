@@ -12,9 +12,10 @@ require("shinyHelpers")
 
 ## extensions of acceptable input files
 
-## extensions <- c("csv", "txt", "xlsx", "ods")
-extensions <- c("csv", "txt")
-
+extensions <- c("csv", "txt", "xlsx", "ods")
+data_examples <- list(ebola_sim = ebola_sim$linelist,
+                      mers = mers_korea_2015$linelist
+                      )
 
 
 
@@ -28,34 +29,35 @@ shinyUI(
     sidebarLayout(
       sidebarPanel(
 
-        ## shinyHelpers::dataimportUI("datasource",
-        ##                            fileExt = extensions,
-        ##                            label = "Select input data"),
+        shinyHelpers::dataimportUI("datasource",
+                                   fileExt = extensions,
+                                   sampleDatasets = data_examples
+                                   ),
 
-        radioButtons(
-          inputId = "datasource",
-          label = "Choose data",
-          choices = c(
-            "Ebola simulation" = "ebola_sim",
-            "MERS South Korea" = "mers_korea",
-            "Upload data")
-        ),
+        ## radioButtons(
+        ##   inputId = "datasource",
+        ##   label = "Choose data",
+        ##   choices = c(
+        ##     "Ebola simulation" = "ebola_sim",
+        ##     "MERS South Korea" = "mers_korea",
+        ##     "Upload data")
+        ## ),
 
-        conditionalPanel(
-          condition = "input.datasource == 'Upload data'",
-          fileInput(
-            inputId = "inputfile",
-            label = "Choose a linelist file to upload",
-            accept = c(
-              'text/csv',
-              'text/comma-separated-values',
-              'text/tab-separated-values',
-              'text/plain',
-              '.csv',
-              '.tsv'
-            )
-          )
-        ),
+        ## conditionalPanel(
+        ##   condition = "input.datasource == 'Upload data'",
+        ##   fileInput(
+        ##     inputId = "inputfile",
+        ##     label = "Choose a linelist file to upload",
+        ##     accept = c(
+        ##       'text/csv',
+        ##       'text/comma-separated-values',
+        ##       'text/tab-separated-values',
+        ##       'text/plain',
+        ##       '.csv',
+        ##       '.tsv'
+        ##     )
+        ##   )
+        ## ),
 
         conditionalPanel(
           condition = "$('li.active a').first().html()== 'Incidence view'",
@@ -114,7 +116,62 @@ shinyUI(
           tabPanel(
             title = "Incidence view",
             plotly::plotlyOutput("plot"),
-            verbatimTextOutput("printed_incidence_object")
+
+            br(), br(),
+
+
+            ## Display R object
+
+            checkboxInput(
+              inputId = "show_R_object",
+              label = "Show incidence object",
+              value = FALSE
+            ),
+
+            conditionalPanel(
+              condition = "input.show_R_object",
+              verbatimTextOutput("printed_incidence_object")
+            ),
+
+
+            ## Display incidence table
+
+            checkboxInput(
+              inputId = "show_incidence_table",
+              label = "Show incidence table",
+              value = FALSE
+            ),
+
+            conditionalPanel(
+              condition = "input.show_incidence_table",
+              DT::dataTableOutput("incidence_table", width = "60%")
+            ),
+
+
+            ## Display fit object
+
+            conditionalPanel(
+              condition = "input.fit_type!='[none]'",
+              checkboxInput(
+                inputId = "show_fit_object",
+                label = "Show fit object",
+                value = FALSE
+              )
+            ),
+
+            conditionalPanel(
+              condition = "input.show_fit_object",
+              verbatimTextOutput("printed_fit_object")
+            ),
+
+
+            ## Downloads
+
+            downloadButton("download_incidence",
+                           label = "Save incidence table (.csv)"),
+
+            br(), br(), br()
+
           ),
 
 
