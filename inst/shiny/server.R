@@ -1,8 +1,10 @@
 
 extensions <- c("csv", "txt", "xlsx", "ods")
 data_examples <- list(ebola_sim = ebola_sim$linelist,
-                      mers = mers_korea_2015$linelist
-                      )
+                      mers_korea = mers_korea_2015$linelist,
+                      flu_china_2013 = fluH7N9_china_2013,
+                      hagelloch_1861 = measles_hagelloch_1861,
+                      norovirus_uk_2001 = norovirus_derbyshire_2001_school)
 
 
 
@@ -41,6 +43,11 @@ server <- function(input, output) {
     x <- get_data()
 
     dates <- x[[input$dates_column]]
+
+    ## convert to dates if provided in yyyy-mm-dd
+    if (!is.null(dates) && !is.numeric(dates)) {
+      dates <- as.Date(dates, format = "%Y-%m-%d")
+    }
 
     if (input$groups_column != "[none]") {
       groups <- x[[input$groups_column]]
@@ -117,13 +124,38 @@ server <- function(input, output) {
 
 
 
+  ## UI input: select variables of certain types
+   variable_types <- mapcolumnsServer(
+     data = get_data(),
+     names = c("dates", "stratification")
+   )
+
+  output$choose_variable_groups <- renderUI(
+    shinyHelpers::mapcolumnsUI(
+      data = get_data(),
+      names = c("dates", "stratification"),
+      labels = c("Indicate which columns are dates",
+                 "Indicate which columns are groups")
+    )
+  )
+
+
+
+
+
+
   ## UI input: choose column for dates
 
   output$choose_date_column <- renderUI({
+    if(is.null(variable_types)) {
+      choices <- "[none]"
+    } else {
+      choices <- variable_types$dates()
+    }
     selectInput(
       inputId = "dates_column",
       label = "Select dates to use",
-      choices = names(get_data())
+      choices = choices
     )
   })
 
@@ -135,8 +167,7 @@ server <- function(input, output) {
   ## UI input: choose column for groups
 
   output$choose_groups_column <- renderUI({
-
-    choices <- c("[none]", names(get_data()))
+    choices <- c("[none]", variable_types$stratification())
 
     selectInput(
       inputId = "groups_column",
