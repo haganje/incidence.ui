@@ -18,7 +18,6 @@ data_examples <- list(ebola_sim = ebola_sim$linelist,
                       )
 
 
-
 shinyUI(
   fluidPage(
 
@@ -64,7 +63,10 @@ shinyUI(
 
           uiOutput("choose_date_column"),
 
-          uiOutput("choose_interval"),
+          sliderInput(
+            inputId = "interval",
+            label = "Choose a time interval (in days)",
+            min = 1, max = 31, step = 1, value = 1),
 
           uiOutput("choose_groups_column"),
 
@@ -169,6 +171,9 @@ shinyUI(
 
             downloadButton("download_incidence",
                            label = "Save incidence table (.csv)"),
+
+            downloadButton("download_R_session",
+                           label = "Save R session (.RData)"),
 
             br(), br(), br()
 

@@ -130,18 +130,6 @@ server <- function(input, output) {
 
 
 
-  ## UI input: choose time interval
-
-  output$choose_interval <- renderUI({
-    sliderInput(
-      inputId = "interval",
-      label = "Choose a time interval (in days)",
-      min = 1, max = 31, step = 1, value = 1)
-  })
-
-
-
-
 
 
   ## UI input: choose column for groups
@@ -224,6 +212,24 @@ server <- function(input, output) {
     content = function(con) {
       write.csv(make_incidence(), con,
                 row.names = FALSE)
+    }
+  )
+
+
+
+
+
+
+  ## This handles the download of the R session.
+
+  output$download_R_session <- downloadHandler(
+    filename = function() {
+      paste('incidence_R_session_', Sys.Date(), '.RData', sep='')
+    },
+    content = function(con) {
+      x <- make_incidence()
+      fit <- make_incidence_fit()
+      save(x, fit, file = con)
     }
   )
 
