@@ -7,11 +7,15 @@
 #'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
 #'
+#' @seealso
+#' The incidence package: \url{http://www.repidemicsconsortium.org/incidence/}
+#'
+#'
 #' @import shiny
 #'
 #' @export
 #'
-incidence_UI <- function(){
+incidence_ui <- function(){
   shiny::runApp(system.file("shiny", package="incidence.ui"))
   return(invisible())
 }

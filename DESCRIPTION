@@ -13,4 +13,9 @@ Imports:
     incidence,
     shiny
 Suggests:
-    outbreaks
+    outbreaks,
+    DT,
+    plotly
+Remotes:
+    reconhub/shinyHelpers
+
