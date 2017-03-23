@@ -60,16 +60,25 @@ server <- function(input, output) {
 
 
 
-  ## This function makes an incidence_fit object
+  ## This function makes an incidence_fit object; the time window to be used for
+  ## the fit is defined by the user in input$fit_interval.
 
   make_incidence_fit <- reactive({
     x <- make_incidence()
-    ## browser()
+
     x <- subset(x,
                 from = min(input$fit_interval),
                 to = max(input$fit_interval)
                 )
-    out <- fit_optim_split(x)$fit
+
+    if (input$fit_type == "single fit") {
+      out <- fit(x)
+    }
+
+    if (input$fit_type == "double fit") {
+      out <- fit_optim_split(x)$fit
+    }
+
 
     return(out)
   })
@@ -159,7 +168,7 @@ server <- function(input, output) {
     pdf(NULL) # hack to avoid R graphical window to pop up
     x <- make_incidence()
 
-    if (input$add_fit) {
+    if (input$fit_type != "[none]") {
       fit <- make_incidence_fit()
     } else {
       fit <- NULL

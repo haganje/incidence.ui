@@ -78,14 +78,14 @@ shinyUI(
             value = TRUE
           ),
 
-          checkboxInput(
-            inputId = "add_fit",
-            label = "Add model fit?",
-            value = FALSE
+          radioButtons(
+            inputId = "fit_type",
+            label = "Choose model fit",
+            choices = c("[none]", "single fit", "double fit")
           ),
 
           conditionalPanel(
-            condition = "input.add_fit",
+            condition = "input.fit_type!='[none]'",
             uiOutput("choose_fit_interval")
           )
 
