@@ -5,27 +5,7 @@ server <- function(input, output) {
   ## This function processes UI inputs and returns a data.frame which will be
   ## used as raw inputs.
 
-  ## get_data <- reactive({
-  ##   if (input$datasource == "ebola_sim") {
-  ##     return(ebola_sim_clean$linelist)
-  ##   } else if (input$datasource == "mers_korea") {
-  ##     return(mers_korea_2015$linelist)
-  ##   } else {
-
-  ##     return(read.csv(input$inputfile$datapath))
-  ##     ## dataimportServer("datasource",
-  ##     ##                  fileExt = extensions)
-  ##   }
-  ## })
-
-
   get_data <- dataimport$server()
-  ## get_data <- dataimportServer("datasource",
-  ##                              fileExt = extensions,
-  ##                              sampleDatasets = data_examples
-  ##                              )
-
-
 
 
 

@@ -1,36 +1,49 @@
 
-
-fluidPage(
-
-  titlePanel(
-    img(src = "img/logo.png", width = "200")
-  ),
-
-  sidebarLayout(
-    sidebarPanel(
-
-      ## shinyHelpers::dataimportUI(
-      ##   "datasource",
-      ##   fileExt = extensions,
-      ##   sampleDatasets = data_examples
-      ## ),
-
-      dataimport$ui(),
+recon.ui::reconNavbarPage(
+  "incidence.ui",
 
 
-      conditionalPanel(
-        condition = "$('li.active a').first().html()== 'Input data view'",
+
+
+
+
+  ## ====================
+  ## Data input panel
+  ## ====================
+
+  tabPanel(
+    "Load data",
+    fluidRow(
+      column(
+        4,
+        h2("Choose data input"),
+        dataimport$ui(),
         br(),
         uiOutput("choose_variable_groups")
-       ),
+      ),
+
+      column(8,
+             h2("Data view"),
+             DT::dataTableOutput("input_data")
+             )
+    )
+  ),
 
 
 
 
 
 
-      conditionalPanel(
-        condition = "$('li.active a').first().html()== 'Incidence view'",
+  ## ===================
+  ## Data analysis panel
+  ## ===================
+
+  tabPanel(
+    "Run analyses",
+    fluidRow(
+      column(
+        4,
+        h2("Settings"),
 
         uiOutput("choose_date_column"),
 
@@ -63,109 +76,102 @@ fluidPage(
           condition = "input.fit_type!='[none]'",
           uiOutput("choose_fit_interval")
         )
-
-      )
-
-    ),
+      ),
 
 
+      column(
+        8,
+        ## h2("Analyses view"),
+        plotly::plotlyOutput("plot"),
+
+        br(), br(),
 
 
+        ## Display R object
 
-    # Show a plot of the generated distribution
-    mainPanel(
-      tabsetPanel(
+        checkboxInput(
+          inputId = "show_R_object",
+          label = "Show incidence object",
+          value = FALSE
+        ),
 
-        ## Panel: view data
-
-        tabPanel(
-          title = "Input data view",
-          DT::dataTableOutput("input_data")
+        conditionalPanel(
+          condition = "input.show_R_object",
+          verbatimTextOutput("printed_incidence_object")
         ),
 
 
-        ## Panel: incidence view
+        ## Display incidence table
 
-        tabPanel(
-          title = "Incidence view",
-          plotly::plotlyOutput("plot"),
+        checkboxInput(
+          inputId = "show_incidence_table",
+          label = "Show incidence table",
+          value = FALSE
+        ),
 
-          br(), br(),
+        conditionalPanel(
+          condition = "input.show_incidence_table",
+          DT::dataTableOutput("incidence_table", width = "60%")
+        ),
 
 
-          ## Display R object
+        ## Display fit object
 
+        conditionalPanel(
+          condition = "input.fit_type!='[none]'",
           checkboxInput(
-            inputId = "show_R_object",
-            label = "Show incidence object",
+            inputId = "show_fit_object",
+            label = "Show fit object",
             value = FALSE
-          ),
+          )
+        ),
 
-          conditionalPanel(
-            condition = "input.show_R_object",
-            verbatimTextOutput("printed_incidence_object")
-          ),
-
-
-          ## Display incidence table
-
-          checkboxInput(
-            inputId = "show_incidence_table",
-            label = "Show incidence table",
-            value = FALSE
-          ),
-
-          conditionalPanel(
-            condition = "input.show_incidence_table",
-            DT::dataTableOutput("incidence_table", width = "60%")
-          ),
-
-
-          ## Display fit object
-
-          conditionalPanel(
-            condition = "input.fit_type!='[none]'",
-            checkboxInput(
-              inputId = "show_fit_object",
-              label = "Show fit object",
-              value = FALSE
-            )
-          ),
-
-          conditionalPanel(
-            condition = "input.show_fit_object",
-            verbatimTextOutput("printed_fit_object")
-          ),
-
-
-          ## Downloads
-
-          downloadButton("download_incidence",
-                         label = "Save incidence table (.csv)"),
-
-          downloadButton("download_R_session",
-                         label = "Save R session (.RData)"),
-
-          br(), br(), br()
-
+        conditionalPanel(
+          condition = "input.show_fit_object",
+          verbatimTextOutput("printed_fit_object")
         ),
 
 
-        ## Panel: help
+        ## Downloads
 
-        tabPanel(
-          title = "Help",
-          HTML(paste(readLines("www/html/help.html"), collapse=" "))
-        ),
+        downloadButton("download_incidence",
+                       label = "Save incidence table (.csv)"),
 
+        downloadButton("download_R_session",
+                       label = "Save R session (.RData)"),
 
-        ## Panel: system info
-
-        tabPanel(
-          title = "System info",
-          verbatimTextOutput("systeminfo"))
+        br(), br(), br()
 
       )
     )
+  ),
+
+
+
+
+
+
+  ## ===================
+  ## Documentation panel
+  ## ===================
+
+  tabPanel(
+    "Help",
+    HTML(paste(readLines("www/html/help.html"), collapse=" "))
+  ),
+
+
+
+
+
+
+  ## =================
+  ## System info panel
+  ## =================
+
+  tabPanel(
+    "System info",
+    verbatimTextOutput("systeminfo")
   )
+
 )

@@ -7,6 +7,7 @@ require("DT")
 require("incidence")
 require("plotly")
 require("shinyHelpers")
+require("recon.ui")
 
 
 ## extensions of acceptable input files
