@@ -62,7 +62,8 @@ server <- function(input, output) {
     }
 
     if (input$fit_type == "double fit") {
-      out <- fit_optim_split(x)$fit
+      split_date <- min(x$dates) + ((input$split_point - 1)  * x$interval)
+      out <- fit(x, split = split_date)
     }
 
 
@@ -161,21 +162,36 @@ server <- function(input, output) {
     lab <- sprintf("Indicate fitting interval (in %d days periods)",
                    x$interval)
 
-    div(
-      sliderInput(
-        inputId = "fit_interval",
-        label = lab,
-        min = 0, max = length(x$dates),
-        step = 1L,
-        value = c(0, length(x$dates))
-      ),
-      a(paste0("current dates: ",
-              as.character(min(x$dates)),
-              " - ",
-              as.character(max(x$dates)))
-        )
+    sliderInput(
+      inputId = "fit_interval",
+      label = lab,
+      min = 0, max = length(x$dates),
+      step = 1L,
+      value = c(0, length(x$dates))
     )
 
+  })
+
+
+
+
+
+
+  ## UI input: choose split position
+
+  output$choose_split_point <- renderUI({
+    x <- make_incidence()
+    lab <- sprintf("Indicate split date (in %d days periods)",
+                   x$interval)
+    default_split <- match(fit_optim_split(x)$split, x$dates)
+
+    sliderInput(
+      inputId = "split_point",
+      label = lab,
+      min = 0, max = length(x$dates),
+      step = 1L,
+      value = default_split
+    )
 
   })
 
