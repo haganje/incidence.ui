@@ -1,14 +1,4 @@
 
-extensions <- c("csv", "txt", "xlsx", "ods")
-data_examples <- list(ebola_sim = ebola_sim$linelist,
-                      mers_korea = mers_korea_2015$linelist,
-                      flu_china_2013 = fluH7N9_china_2013,
-                      hagelloch_1861 = measles_hagelloch_1861,
-                      norovirus_uk_2001 = norovirus_derbyshire_2001_school)
-
-
-
-
 
 server <- function(input, output) {
 
@@ -28,10 +18,12 @@ server <- function(input, output) {
   ##   }
   ## })
 
-  get_data <- dataimportServer("datasource",
-                               fileExt = extensions,
-                               sampleDatasets = data_examples
-                               )
+
+  get_data <- dataimport$server()
+  ## get_data <- dataimportServer("datasource",
+  ##                              fileExt = extensions,
+  ##                              sampleDatasets = data_examples
+  ##                              )
 
 
 
