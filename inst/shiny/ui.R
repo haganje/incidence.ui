@@ -15,17 +15,18 @@ recon.ui::reconNavbarPage(
     "Load data",
     fluidRow(
       column(
-        4,
+        3,
         h2("Choose data input"),
         dataimport$ui(),
         br(),
         uiOutput("choose_variable_groups")
       ),
 
-      column(8,
-             h2("Data view"),
-             DT::dataTableOutput("input_data")
-             )
+      column(
+        9,
+        h2("Data view"),
+        DT::dataTableOutput("input_data")
+      )
     )
   ),
 
@@ -42,7 +43,7 @@ recon.ui::reconNavbarPage(
     "Run analyses",
     fluidRow(
       column(
-        4,
+        3,
         h2("Settings"),
 
         uiOutput("choose_date_column"),
@@ -75,13 +76,18 @@ recon.ui::reconNavbarPage(
         conditionalPanel(
           condition = "input.fit_type!='[none]'",
           uiOutput("choose_fit_interval")
+        ),
+
+        conditionalPanel(
+          condition = "input.fit_type=='double fit'",
+          uiOutput("choose_split_point")
         )
+
       ),
 
 
       column(
-        8,
-        ## h2("Analyses view"),
+        9,
         plotly::plotlyOutput("plot"),
 
         br(), br(),

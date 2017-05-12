@@ -19,6 +19,8 @@ data_examples <- list(ebola_sim = ebola_sim$linelist,
                       hagelloch_1861 = measles_hagelloch_1861,
                       norovirus_uk_2001 = norovirus_derbyshire_2001_school)
 
+shiny::addResourcePath("recon.ui", system.file("assets", package = "recon.ui"))
+
 dataimport <- dataimportModule(
   "datasource", fileExt = extensions,
   sampleDataPackage = "outbreaks",
