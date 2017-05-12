@@ -63,7 +63,7 @@ recon.ui::reconNavbarPage(
         checkboxInput(
           inputId = "ISO_weeks",
           label = "Use ISO weeks?",
-          value = TRUE
+          value = FALSE
         ),
 
         radioButtons(
